@@ -15,7 +15,13 @@ $(function() {
 
 <div class="gridster">
   <ul>
-     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+    <div style="width:100%; height:100%; background-color:#FF0000">
+      <img style="margin: 105px 0 0 55px;" src = "http://www.bravecs.com/images/logo.png" alt=""/>
+    </div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
         <div 
           data-id="redis_connected_clients" 
           data-view="Number" 
@@ -23,6 +29,11 @@ $(function() {
           data-title="Clients">
         </div>
     </li>
+    
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="opc_server" data-view="Text" data-title="Hello" data-text="."  style="background-color: #0099FF" ></div>
+    </li>
+
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
         <div 
           data-id="redis_used_memory" 
@@ -32,6 +43,15 @@ $(function() {
           >
         </div>
     </li>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div 
+          data-id="time" 
+          data-view="Text" 
+          style="background-color: #3300FF" 
+          data-title="Curret as of:">
+        </div>
+    </li>
+  
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
         <div 
           data-id="Brave.calendar.opc_group.Out_dint" 
@@ -51,9 +71,9 @@ $(function() {
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
         <div 
           data-id="Brave.calendar.opc_group.Out_bool" 
-          data-view="Number"
+          data-view="Text"
           style="background-color: #3300FF" 
-          data-title="Out_bool">
+          data-title="Run status">
         </div>
     </li>
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
@@ -85,19 +105,21 @@ $(function() {
       </div>
     </li>
 
-    <!-- <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+<!--     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
     <div style="width:100%; height:100%; background-color:#000000">
       <video autoplay width=370 height=340 >
         <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
       </video>
     </div>
     </li>
-     -->
-    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="opc_server" data-view="Text" data-title="Hello" data-text="."  style="background-color: #0099FF" ></div>
-    </li>
-  </ul>
-
+    
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+    <div style="width:100%; height:100%; background-color:#000000">
+      
+      <iframe width="560" height="315" src="//www.youtube.com/embed/cR-YlZ9NdIA?rel=0&autoplay=1&autohide=1&showinfo=0" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </li> -->
+</ul>
 
 
 

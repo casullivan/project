@@ -13,24 +13,24 @@ end
 
 @tags = JSON.parse(redis.get('registry'))
  
-SCHEDULER.every('2s', first_in: '1s') {
+SCHEDULER.every('1s', first_in: '1s') {
 	info = redis.info
  
+	send_event('time', {
+		text: Time.now.strftime("%d/%m/%Y %H:%M:%S")
+	})
+
 	send_event('redis_connected_clients', {
 		current: info["connected_clients"],
 		moreinfo: "Number of connected clients"
 	})
 
 	@tags.each do |item|
-		@value = redis.get(item).to_i
 		send_event(item, {
-			#value: redis.get(item),
-				value: @value,
-				current: redis.get(item),
-		title: redis.get(item),
-		text: redis.get(item)
+			value: 		redis.get(item).to_i,
+			current: 	redis.get(item).to_f,
+			text: 		redis.get(item)
 		})
-		puts @value == 90
 	end
 
 	send_event('connected', {
