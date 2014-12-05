@@ -5,4 +5,4 @@ gem 'dashing'
 gem 'redis'
 gem 'json'
 
-# gem 'twitter', '>= 5.9.0'
+gem 'twitter', '>= 5.9.0'
