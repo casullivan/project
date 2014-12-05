@@ -3,12 +3,17 @@ require 'json'
  
 dashing_env = ENV['DASHING_ENV'] || 'development'
 redis_config = YAML.load_file(File.dirname(__FILE__) + '/../config/redis.yml')
- 
-if redis_config[dashing_env].include? ":"
-	t = redis_config[dashing_env].split(":")
-	redis = Redis.new({:host => t[0], :port => t[1].to_i})
-elsif redis_config[dashing_env][-5, 5] == ".sock"
-	redis = Redis.new({ :path => redis_config[dashing_env] })
+
+if ENV["REDISCLOUD_URL"]
+    uri = URI.parse(ENV["REDISCLOUD_URL"])
+    $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+end
+	if redis_config[dashing_env].include? ":"
+		t = redis_config[dashing_env].split(":")
+		redis = Redis.new({:host => t[0], :port => t[1].to_i})
+	elsif redis_config[dashing_env][-5, 5] == ".sock"
+		redis = Redis.new({ :path => redis_config[dashing_env] })
+	end
 end
 
 @tags = JSON.parse(redis.get('registry'))
