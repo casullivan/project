@@ -7,7 +7,7 @@ redis_config = YAML.load_file(File.dirname(__FILE__) + '/../config/redis.yml')
 if ENV["REDISCLOUD_URL"]
     uri = URI.parse(ENV["REDISCLOUD_URL"])
     $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
-end
+else
 	if redis_config[dashing_env].include? ":"
 		t = redis_config[dashing_env].split(":")
 		redis = Redis.new({:host => t[0], :port => t[1].to_i})
