@@ -24,7 +24,7 @@ def connect():
                 opc.connect(opc_server_name, opc_server)
                 list = opc.list('Brave.calendar.opc_group')
                 r.set("connected", "OK")
-                r.set("opc_server", opc_server)
+                r.set("opc_server", plc)
                 r.set("opc_server_name", opc_server_name)
                 r.set("plc", plc)
                 r.set("redis_server", redis_server)
@@ -62,8 +62,9 @@ def run():
     if debug: print r.get(item[0])
     if debug: print r.get("registry")
 
-
 # CONFIG
+print "starting up!"
+
 debug = False
 opc_server = '192.168.1.80'
 opc_server_name = 'Kepware.KEPServerEX.V5'

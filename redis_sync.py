@@ -8,35 +8,34 @@ from redis import Redis
 import json
 
 def connect():
+    global local
+    global remote
     try:
-        remote.set("registry", local.get("registry"))
+        local = Redis(host=local_redis_server)
+        remote = Redis(host=remote_redis_server, port=remote_redis_port, password=remote_redis_password)
     except Exception as e:
         print e, "failed connect"
+        time.sleep(poll_rate)
         connect()
         pass
     finally:
         pass
 
 def run():
-    time.sleep(poll_rate)
     try:
-        for item in tags:
+        for item in local.keys():
             remote.set(item, local.get(item))
-            
-        remote.set('opc_server', local.get('opc_server'))
-        remote.set('connected', local.get('connected'))
-        remote.set('opc_server', local.get('opc_server'))
-        remote.set('plc', local.get('plc'))
-        remote.set('opc_server_name', local.get('opc_server_name'))
-    
     except Exception as e:
         print e, "failed run"
+        time.sleep(poll_rate)
         connect()
         pass
     finally:
+        time.sleep(poll_rate)
         pass
 
 # CONFIG
+print "starting up!"
 
 local_redis_server = 'localhost'
 remote_redis_password = "hjrDouFuQPhNuhmL"
@@ -44,16 +43,14 @@ remote_redis_server = "pub-redis-19711.us-east-1-4.4.ec2.garantiadata.com"
 remote_redis_port = 19711
 poll_rate = 0.3
 
-local = Redis(host=local_redis_server)
-remote = Redis(host=remote_redis_server, port=remote_redis_port, password=remote_redis_password)
+local = None
+remote = None
+
 logging.basicConfig()
 log = logging.getLogger(__name__)
 
-
 #attempt to connect
 connect()
-
-tags = json.loads(local.get("registry"))
 
 # start service
 while True:
