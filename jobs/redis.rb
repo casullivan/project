@@ -4,7 +4,7 @@ require 'json'
 dashing_env = ENV['DASHING_ENV'] || 'development'
 redis_config = YAML.load_file(File.dirname(__FILE__) + '/../config/redis.yml')
 
-if ENV["REDISCLOUD_URL"]
+if ENV["RAILS_ENV"] == 'production'
     uri = URI.parse(ENV["REDISCLOUD_URL"])
     redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 else

@@ -46,8 +46,8 @@ remote_redis_server = "pub-redis-19711.us-east-1-4.4.ec2.garantiadata.com"
 remote_redis_port = 19711
 poll_rate = 0.3
 
-local = Redis(host=redis_server)
-remote = Redis(host=remote_redis_server, port=remote_redis_server, password=remote_redis_password)
+local = Redis(host=local_redis_server)
+remote = Redis(host=remote_redis_server, port=remote_redis_port, password=remote_redis_password)
 logging.basicConfig()
 log = logging.getLogger(__name__)
 
