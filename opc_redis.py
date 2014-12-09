@@ -17,22 +17,27 @@ def connect():
     global list
     opc = None
     list = None
+    if debug: print "Connecting..."
     r.set("connected", "BAD")
     while list is None:
             try:
+                if debug: print "Connection Attempt {"
                 opc = OpenOPC.open_client(opc_server)
                 opc.connect(opc_server_name, opc_server)
                 list = opc.list('Brave.calendar.opc_group')
+                if debug: print "}"
                 r.set("connected", "OK")
                 r.set("opc_server", plc)
                 r.set("opc_server_name", opc_server_name)
                 r.set("plc", plc)
                 r.set("redis_server", redis_server)
             except Exception as e:
+                if debug: print e
                 try:
                     ping(plc, c=1)
                     print {'error': 'Cannot connect to ' + opc_server_name, 'val': 0}
                 except Exception as e:
+                    if debug: print e
                     print {'error': 'Cannot connect to network', 'val': 0}
                     pass
                 pass
@@ -46,11 +51,13 @@ def run():
         try:
             tags = opc.read(list)
         except Exception as e:
+            if debug: print e
             try:
                 ping(plc, c=1)
                 print {'error': 'Cannot connect to ' + opc_server_name, 'val': 0}
                 connect()
             except Exception as e:
+                if debug: print e
                 print {'error': 'Cannot connect to network', 'val': 0}
                 connect()
                 pass
@@ -63,10 +70,10 @@ def run():
     if debug: print r.get("registry")
 
 # CONFIG
-print "starting up!"
+print "Starting up!"
 
 debug = False
-opc_server = '192.168.1.80'
+opc_server = '192.168.150.121'
 opc_server_name = 'Kepware.KEPServerEX.V5'
 redis_server = 'localhost'
 plc = '192.168.1.2'
@@ -88,4 +95,5 @@ r.set("registry", json.dumps(list))
 
 # start service
 while True:
+    if debug: print "cycle"
     run()
