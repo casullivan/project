@@ -28,5 +28,28 @@
       </div>
       <a href="#saving-instructions" id="save-gridster">Save this layout</a>
     <% end %>
+
+
+
   </body>
+  <script type="text/javascript">
+  $(document).ready(function () {
+  // Basic event handler to prevent event propagation and clicks
+  var preventClick = function (e) { e.stopPropagation(); e.preventDefault(); };
+  $(element).gridster({
+    draggable: {
+      start: function (event, ui) {
+        // Stop event from propagating down the tree on the capture phase
+        ui.$player[0].addEventListener('click', preventClick, true);
+      },
+      stop: function (event, ui) {
+        var player = ui.$player;
+        setTimeout(function () {
+          player[0].removeEventListener('click', preventClick, true);
+        });
+      }
+    }
+  });
+})
+</script>
 </html>
