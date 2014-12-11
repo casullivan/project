@@ -23,3 +23,6 @@ Dashing.on 'ready', ->
       draggable:
         stop: Dashing.showGridsterInstructions
         start: -> Dashing.currentWidgetPositions = Dashing.getWidgetPositions()
+
+if window.ontouchstart
+ $('.gridster ul:first').data('gridster').disable()
