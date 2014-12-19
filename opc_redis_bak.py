@@ -20,40 +20,36 @@ def connect():
     if debug: print "Connecting..."
     r.set("connected", "BAD")
     while list is None:
-        try:
-            if debug: print "Connection Attempt {"
-            opc = OpenOPC.open_client(opc_server)
-            opc.connect(opc_server_name, opc_server)
-            list = opc.list('Brave.calendar.opc_group')
-            if debug: print "}"
-            r.set("connected", "OK")
-            r.set("opc_server", plc)
-            r.set("opc_server_name", opc_server_name)
-            r.set("plc", plc)
-            r.set("redis_server", redis_server)
-        except Exception as e:
-            if debug: print e
             try:
-                ping(plc, c=1)
-                print {'error': 'Cannot connect to ' + opc_server_name, 'val': 0}
+                if debug: print "Connection Attempt {"
+                opc = OpenOPC.open_client(opc_server)
+                opc.connect(opc_server_name, opc_server)
+                list = opc.list('Brave.calendar.opc_group')
+                if debug: print "}"
+                r.set("connected", "OK")
+                r.set("opc_server", plc)
+                r.set("opc_server_name", opc_server_name)
+                r.set("plc", plc)
+                r.set("redis_server", redis_server)
             except Exception as e:
                 if debug: print e
-                print {'error': 'Cannot connect to network', 'val': 0}
+                try:
+                    ping(plc, c=1)
+                    print {'error': 'Cannot connect to ' + opc_server_name, 'val': 0}
+                except Exception as e:
+                    if debug: print e
+                    print {'error': 'Cannot connect to network', 'val': 0}
+                    pass
                 pass
-            pass
-        finally:
-            time.sleep(poll_rate)
+            finally:
+                time.sleep(poll_rate)
 
 def run():    
     tags = None
     while tags is None:
         time.sleep(poll_rate)
         try:
-            r.select(0)
             tags = opc.read(list)
-            r.select(1)
-            tags = opc.read(list)
-            opc.write()
         except Exception as e:
             if debug: print e
             try:
