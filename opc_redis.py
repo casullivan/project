@@ -34,7 +34,7 @@ def connect():
         except Exception as e:
             if debug: print e
             try:
-                ping(plc, c=1)
+                ping(opc_server, c=1)
                 print {'error': 'Cannot connect to ' + opc_server_name, 'val': 0}
             except Exception as e:
                 if debug: print e
@@ -49,15 +49,11 @@ def run():
     while tags is None:
         time.sleep(poll_rate)
         try:
-            r.select(0)
             tags = opc.read(list)
-            r.select(1)
-            tags = opc.read(list)
-            opc.write()
         except Exception as e:
             if debug: print e
             try:
-                ping(plc, c=1)
+                ping(opc_server, c=1)
                 print {'error': 'Cannot connect to ' + opc_server_name, 'val': 0}
                 connect()
             except Exception as e:
@@ -75,6 +71,9 @@ def run():
 
 # CONFIG
 print "Starting up!"
+
+
+print os.environ['']
 
 debug = False
 opc_server = '192.168.150.121'
@@ -101,3 +100,5 @@ r.set("registry", json.dumps(list))
 while True:
     if debug: print "cycle"
     run()
+
+    
